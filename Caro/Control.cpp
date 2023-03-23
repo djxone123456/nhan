@@ -106,12 +106,6 @@ void HandleEvent(int x, int y, void(*func)(int, int, KEY_EVENT_RECORD)) {
 	}
 }
 
-//Close Console
-void Exit() {
-	HWND hwnd = GetConsoleWindow();
-	SendMessage(hwnd, WM_CLOSE, 0, 0);
-}
-
 //Control Menu:
 //0: Main Menu
 //1: New Game
@@ -121,7 +115,7 @@ void Exit() {
 //5: Info
 //6: Exit
 void ControlMenu() {
-	while (1) {
+	while (true) {
 		if (_KEYPRESSED) {
 			switch (_MENU) {
 			case 1:

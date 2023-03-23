@@ -29,17 +29,17 @@ using namespace std;
 #define WIDTH 1280
 
 //ASCII Code For Board (Single Line)
-//#define VERTICAL_LINE char(179)
-//#define HORIZONTAL_LINE char(196)
-//#define RIGHT_TOP char(191)
-//#define RIGHT_BOTTOM char(217)
-//#define LEFT_TOP char(218)
-//#define LEFT_BOTTOM char(192)
-//#define T_SHAPE_UP char(193)
-//#define T_SHAPE_DOWN char(194)
-//#define T_SHAPE_RIGHT char(195)
-//#define T_SHAPE_LEFT char(180)
-//#define CROSS char(197)
+#define VERTICAL_LINE_LIGHT char(179) //│
+#define HORIZONTAL_LINE_LIGHT char(196) //─
+#define RIGHT_TOP_LIGHT char(191) //┐
+#define RIGHT_BOTTOM_LIGHT char(217) //┘
+#define LEFT_TOP_LIGHT char(218) //┌
+#define LEFT_BOTTOM_LIGHT char(192) //└
+#define T_SHAPE_UP_LIGHT char(193) //┴
+#define T_SHAPE_DOWN_LIGHT char(194) //┬
+#define T_SHAPE_RIGHT_LIGHT char(195) //├
+#define T_SHAPE_LEFT_LIGHT char(180) //┤
+#define CROSS_LIGHT char(197) //┼
 
 //ASCII Code For Board (Double Line)
 #define VERTICAL_LINE char(186)
@@ -55,9 +55,9 @@ using namespace std;
 #define CROSS char(206)
 
 // ASCII Code For Box
-#define Horizontal_Line char(219)
-#define Upper_Vertical char(223)
-#define Lower_Vertical char(220)
+#define Horizontal_Line char(219) //█
+#define Upper_Vertical char(223) //▀
+#define Lower_Vertical char(220) //▄
 
 // Menu's Box Data
 #define BMax_i 85
@@ -84,6 +84,10 @@ using namespace std;
 struct _POINT {
 	int x, y, c;
 };
+
+//ASCII Code For Selected Part Of The Menu
+#define SELECTED_LEFT char(175)
+#define SELECTED_RIGHT char(174)
 
 //Global Variables
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
@@ -293,8 +297,24 @@ const wstring D2_LOSE_4 = L"██╚════╗██║   ██║╚═�
 const wstring D2_LOSE_5 = L"███████╝╚██████═╝███████╝███████";
 
 
-const wstring D2_TOPPLAYERS_1 = L"░▀█▀░▄▀▄▒█▀▄░░▒█▀▄░█▒░▒▄▀▄░▀▄▀▒██▀▒█▀▄░▄▀▀";
-const wstring D2_TOPPLAYERS_2 = L"░▒█▒░▀▄▀░█▀▒▒░░█▀▒▒█▄▄░█▀█░▒█▒░█▄▄░█▀▄▒▄██";
+const wstring D1_TOPPLAYERS_1 = L"▀▀█▀▀ ▄▀▀▄ ▄▀▀▄   ▄▀▀▄ █  ▄▀▀▄ █  █ █▀▀ █▀▀▄ █▀▀";
+const wstring D1_TOPPLAYERS_2 = L"  █   █  █ █▄▄▀   █▄▄▀ █  █▄▄█ █▄▄█ █▀▀ █▄▄▀ ▀▀█";
+const wstring D1_TOPPLAYERS_3 = L"  ▀    ▀▀  ▀      ▀    ▀▀ ▀  ▀ ▄▄▄▀ ▀▀▀ ▀ ▀▀ ▀▀▀";
 
 
+const wstring D1_MENULOGO_1 = L"█▀▄▀█ █▀▀ █▀▀▄ █  █";
+const wstring D1_MENULOGO_2 = L"█ ▀ █ █▀▀ █  █ █  █";
+const wstring D1_MENULOGO_3 = L"▀   ▀ ▀▀▀ ▀  ▀  ▀▀▀";
+
+const wstring D1_DANCINGCATRIGHT_1 = L"  ∧＿∧　 ♪ ";
+const wstring D1_DANCINGCATRIGHT_2 = L"（´・ω・)∩   ";
+const wstring D1_DANCINGCATRIGHT_3 = L"o　　　 ﾉ    ";
+const wstring D1_DANCINGCATRIGHT_4 = L"Ｏ＿　.ﾉ     ";
+const wstring D1_DANCINGCATRIGHT_5 = L"   (ノ      ";
+
+const wstring D1_DANCINGCATLEFT_1 =  L" ∧＿∧　♪   ";
+const wstring D1_DANCINGCATLEFT_2 =  L"∩・ω・｀）   ";
+const wstring D1_DANCINGCATLEFT_3 =  L"|   ⊂ﾉ     ";
+const wstring D1_DANCINGCATLEFT_4 =  L"｜　 _⊃　　♪";
+const wstring D1_DANCINGCATLEFT_5 =  L"し ⌒       ";
 #endif
