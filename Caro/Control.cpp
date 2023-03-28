@@ -70,26 +70,6 @@ void HandleKeyForBoard(int x, int y, KEY_EVENT_RECORD key) {
 	}
 }
 
-//Handle key for the Help Menu
-void HandleKeyForHelp(int X, int Y, KEY_EVENT_RECORD key) {
-	if (key.bKeyDown && key.wVirtualKeyCode == VK_RETURN) {
-		_MENU = 1;
-		_CURRENT_MENU = 0;
-		system("cls");
-		//...
-	}
-}
-
-// Handle key for The Info Menu
-void HandleKeyForInfo(int X, int Y, KEY_EVENT_RECORD key) {
-	if (key.bKeyDown && key.wVirtualKeyCode == VK_RETURN) {
-		_MENU = 1;
-		_CURRENT_MENU = 0;
-		system("cls");
-		//...
-	}
-}
-
 //Handle event
 void HandleEvent(int x, int y, void(*func)(int, int, KEY_EVENT_RECORD)) {
 	DWORD DWNumberOfEvents = 0;
@@ -115,38 +95,33 @@ void HandleEvent(int x, int y, void(*func)(int, int, KEY_EVENT_RECORD)) {
 //5: Info
 //6: Exit
 void ControlMenu() {
-	while (true) {
+	while (1) {
 		if (_KEYPRESSED) {
+			_KEYPRESSED = 0;
+			_CURRENT_MENU = _MENU;
+			system("cls");
+
 			switch (_MENU) {
+			case 0:
+				MainMenu();
+				break;
 			case 1:
-				_KEYPRESSED = 0;
-				//New game
+				NewGame();
 				break;
 			case 2:
-				_KEYPRESSED = 0;
 				//Load game
 				break;
 			case 3:
-				_KEYPRESSED = 0;
-				_CURRENT_MENU = 3;
-				//Settings
-				system("cls");
-				
+				Setting();
+
 				break;
 			case 4:
-				_CURRENT_MENU = 4;
-				_KEYPRESSED = 0;
-				system("cls");
-				//Help
+				//About();
 				break;
 			case 5:
-				_KEYPRESSED = 0;
-				_CURRENT_MENU = 5;
-				system("cls");
-				//Info
+				Help();
 				break;
 			case 6:
-				system("cls");
 				//Say goodbye and exit
 				Sleep(1000);
 				Exit();
@@ -155,7 +130,7 @@ void ControlMenu() {
 		}
 		switch (_CURRENT_MENU) {
 		case 0:
-			//HandleEvent(80, 22, HandleKeyForMainMenu);
+			HandleEvent(80, 22, HandleKeyForMainMenu);
 			break;
 		case 1:
 			HandleEvent(D3_NewGame_Box_Left + 26, D3_NewGame_Box_Top + 7, HandleKeyForNewGame);
@@ -163,13 +138,13 @@ void ControlMenu() {
 		case 2:
 			break;
 		case 3:
-			
+			HandleEvent(80, 22, HandleKeyForSettings);
 			break;
 		case 4:
-			//HandleEvent(80, 22, HandleKeyForHelp);
+			//HandleEvent(80, 22, HandleKeyForAbout);
 			break;
 		case 5:
-			//HandleEvent(80, 22, HandleKeyForInfo);
+			HandleEvent(80, 22, HandleKeyForHelp);
 			break;
 		case 7:
 			HandleEvent(0, 0, HandleKeyForChoosingChar);

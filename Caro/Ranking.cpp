@@ -2,30 +2,58 @@
 
 int Ranking()
 {
-	TopRanking arr[5];
+	TopRanking* arr = new TopRanking[5];
 
 	#ifdef DEBUG_RANKING
-		Init(arr);
+		Init(arr);  
 	#endif
 	//InputFile("SavedFiles\\");
 
-	TopPlayerLogo(61, 13);
-	CreateRankingStep(18, 18, 20, 8, 5, 3, arr);
-	CreateRankingTable(85, 17, arr);
+	InitRankingFile(ExePath() + L"//SavedFiles//", L"fileLoad.json", arr);
+	TopPlayerLogo(17, 13);
+	CreateRankingStep(18, 18, 20, 10, 7, 4, arr);
+	CreateRankingTable(18, 29, arr);
 
 	return 0x0000;
 }
 
-static void CreateBar(int x, int y, int height, int width)
+static wstring ExePath() {
+	TCHAR buffer[MAX_PATH] = { 0 };
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
+	wstring dis = wstring(buffer).substr(0, pos);
+
+	if (dis.substr(dis.size() - 5, 5) == L"Debug") dis.erase(dis.size() - 6, 6);
+	return dis;
+} 
+
+static void CreateBar(int x, int y, int width, int height)
 {
-	for (int i = 0; i < height; i++)
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < width; j++)
-		{
-			GotoXY(x + i, y + j);
-			cout << Horizontal_Line;
-		}
+		GotoXY(x + i, y);
+		wcout << DarkSquareBox;
 	}
+
+	for (int i = 1; i < height - 1; i++)
+	{
+		GotoXY(x, y + i);
+		wcout << DarkSquareBox;
+		wcout << DarkSquareBox;
+		for (int j = 2; j < width - 2; j++)
+			wcout << GraySquareBox;
+		wcout << DarkSquareBox;
+		wcout << DarkSquareBox;
+	}
+
+	for (int i = 0; i < width; i++)
+	{
+		GotoXY(x + i, y + height - 1);
+		wcout << DarkSquareBox;
+	}
+	int CurrentMode = _setmode(_fileno(stdout), OldMode);
 }
 
 static void TopPlayerLogo(int x, int y)
@@ -43,14 +71,14 @@ static void TopPlayerLogo(int x, int y)
 static void CreateRankingStep(int x, int y, int width, int Top1_height, int Top2_height, int Top3_height, TopRanking* arr)
 {
 	//Init frame
-	CreateBar(x, y + (Top1_height - Top3_height), width, Top3_height);
+	CreateBar(x, y + (Top1_height - Top3_height), width + 2, Top3_height);
 	CreateBar(x + width, y, width, Top1_height);
-	CreateBar(x + 2 * width, y + (Top1_height - Top2_height), width, Top2_height);
+	CreateBar(x + 2 * width - 2, y + (Top1_height - Top2_height), width + 2, Top2_height);
 
 	//Display data
-	AllignCenter(D1_POINT(x, y + (Top1_height - Top3_height) - 1, (arr + 0)->Name, width));
-	AllignCenter(D1_POINT(x + width, y - 1, (arr + 1)->Name, width));
-	AllignCenter(D1_POINT(x + 2 * width, y + (Top1_height - Top2_height) - 1, (arr + 2)->Name, width));
+	AllignCenter(D1_POINT(x, y + (Top1_height - Top3_height) - 1, (arr + 2)->Name, width));
+	AllignCenter(D1_POINT(x + width, y - 1, (arr + 0)->Name, width));
+	AllignCenter(D1_POINT(x + 2 * width, y + (Top1_height - Top2_height) - 1, (arr + 1)->Name, width));
 }
 
 static void AllignCenter(const D1_POINT Param) // Need to change
@@ -140,3 +168,77 @@ static void Init(TopRanking* arr) //DEBUG
 	}
 }
 #endif
+
+static void UpdatePlayer(const string Name, int Wins, int Loses, int Draws = 0) // Have to change
+{
+	TopRanking tmp = RankMap[Name];
+	tmp.Name = Name;
+	tmp.Draws += Draws;
+	tmp.Wins += Wins;
+	tmp.Loses += Loses;
+	RankMap[Name] = tmp;
+}
+
+static int StringToInt(const string& n)
+{
+	int val = 0;
+	for (char i : n)
+		if (i >= '0' && i <= '9') val = val * 10 + ((int)i - '0');
+	return val;
+}
+
+static int InitRankingFile(const wstring dir, const wstring SystemFileName, TopRanking*& arr)
+{
+	RankMap.clear();
+	RankSet.clear();
+	ifstream input;
+	input.open(dir + SystemFileName);
+	if (input.fail()) return ErrorPopUp(0x0001);
+
+	string FileDir;
+	while (!input.eof())
+	{
+		ifstream FileInput;
+		input >> FileDir;
+
+		wstring wsTmp(FileDir.begin(), FileDir.end());
+		FileInput.open(dir + wsTmp);
+
+		if (FileInput.fail()) {
+			FileInput.close();
+			continue; // If any files are error, don't waste time to try
+		}
+
+		string Player[2];
+		string PlayerPoint[2];
+		
+		for (int i = 0; i < 2; i++)
+			getline(FileInput, Player[i]);
+
+		if (FileInput.eof()) continue;
+
+		for (int i = 0; i < 2; i++)
+			FileInput >> PlayerPoint[i];
+
+		for (int i = 0; i < 2; i++)
+		{
+			UpdatePlayer(Player[i], StringToInt(PlayerPoint[i]), StringToInt(PlayerPoint[1 - i]));
+		}
+
+		FileInput.close();
+	}
+
+	input.close();
+
+	for (auto val : RankMap)
+	{
+		RankSet.push_back(val.second);
+	}
+
+	sort(RankSet.begin(), RankSet.end(), Compare);
+
+	for (int i = 0; i < min(RankSet.size(), 5); i++)
+		arr[i] = RankSet[i];
+
+	return 0x0000;
+}

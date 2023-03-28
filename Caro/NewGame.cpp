@@ -1,10 +1,11 @@
 #include "NewGame.h"
 
+
 int D3_Y2 = D3_NewGame_Box_Top + 7;
 int D3_GameMode = 0;
 int D3_Time = 0;
 
-string NewGame()
+int NewGame()
 {
 	ShowCur(0);
 
@@ -129,7 +130,7 @@ string NewGame()
 	GotoXY(D3_NewGame_Box_Left + D3_NewGame_Box_Max_i - 17, D3_NewGame_Box_Max_j - 3);
 	cout << "Apply";
 
-	return "0x8jkbfa8";
+	return 0x0000;
 }
 
 static void D3_EraseConsole(int x1, int x2, int y)
@@ -153,6 +154,9 @@ void HandleKeyForNewGame(int D3_X, int D3_Y, KEY_EVENT_RECORD key)
 		case VK_ESCAPE:
 			if (D2_INGAME_MUSIC) PlaySound(TEXT("sounds//select.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			D3_Y2 = D3_NewGame_Box_Top + 7;
+			_KEYPRESSED = 1;
+			_MENU = 0;
+			_CURRENT_MENU = 0;
 			break;
 		case VK_RETURN: //Enter
 			if (D2_INGAME_MUSIC) PlaySound(TEXT("sounds//select.wav"), NULL, SND_FILENAME | SND_ASYNC);

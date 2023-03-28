@@ -4,7 +4,6 @@
 #include "Control.h"
 #include "View.h"
 #include "Data.h"
-#include "Ranking.h"
 #include "Error.h"
 
 //DEFINES

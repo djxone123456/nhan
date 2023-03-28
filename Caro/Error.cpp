@@ -2,6 +2,7 @@
 
 int ErrorPopUp(const int ErrorCommand)
 {
+	ShowCur(0);
 	CreateFrame(65, 16, 105, 26);
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
 	GotoXY(70, 19);
@@ -19,6 +20,9 @@ int ErrorPopUp(const int ErrorCommand)
 
 	switch (ErrorCommand)
 	{
+		case 0x0001:
+		AllignCenterString(D1_POINT(67, 22, "Unable to load fileLoad.json", 104 - 67 + 1));
+			break;
 		case 0x0015:
 			AllignCenterString(D1_POINT(67, 22, "Allocate memory unsuccessfully", 104 - 67 + 1));
 			break;

@@ -8,7 +8,12 @@ void HandleKeyForSettings(int x, int y, KEY_EVENT_RECORD key) {
 			system("cls");
 			D2_WHICH_SETTING = 0;
 			ExportSettings();
-			//...
+			_KEYPRESSED = 1;
+			_MENU = 0;
+			_CURRENT_MENU = 0;
+			system("cls");
+			//Draw main menu
+			//Set cursor to default position
 			break;
 		case VK_LEFT: case 0x41: //Left arrow
 			if (D2_INGAME_MUSIC) PlaySound(TEXT("sounds//switch-selection.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -95,7 +100,7 @@ void HandleKeyForSettings(int x, int y, KEY_EVENT_RECORD key) {
 		}
 }
 
-string Setting() {
+int Setting() {
 	ShowCur(0);
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
 	int _pos_x = D2_X_SETTING + 9;
@@ -168,7 +173,7 @@ string Setting() {
 	GotoXY(D2_X_SETTING + 24, D2_Y_SETTING + 17);
 	printf("Press Enter to apply your settings");
 
-	return "0xD2SETS"; //Setting succeeded
+	return 0x0000; //Setting succeeded
 }
 
 void BackgroundMusic() {
@@ -178,18 +183,18 @@ void BackgroundMusic() {
 		mciSendString(L"pause \"sounds//background-music.mp3\"", NULL, 0, 0);
 }
 
-string ExportSettings() {
+int ExportSettings() {
 	ofstream _setting_out("settings.json", ios::out);
-	if (!_setting_out) return "0xD2SFNF"; //Setting file not found
+	if (!_setting_out) return ErrorPopUp(0x0020); //Setting file not found
 	_setting_out << D2_BACKGROUND_MUSIC << "\n" << D2_INGAME_MUSIC;
 	_setting_out.close();
-	return "0xD2SFSC"; //Setting file is successfully opened
+	return 0x0000; //Setting file is successfully opened
 }
 
-string ImportSettings() {
+int ImportSettings() {
 	ifstream _setting_in("settings.json", ios::in);
-	if (!_setting_in) return "0xD2SFNF"; //Setting file not found
+	if (!_setting_in) return ErrorPopUp(0x0020); //Setting file not found
 	_setting_in >> D2_BACKGROUND_MUSIC >> D2_INGAME_MUSIC;
 	_setting_in.close();
-	return "0xD2SFSC"; //Setting file is successfully opened
+	return 0x0000; //Setting file is successfully opened
 }

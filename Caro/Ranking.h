@@ -1,10 +1,14 @@
-#pragma once
+﻿#pragma once
 #ifndef RANKING_H
 #define RANKING_H
-#define DEBUG_RANKING
+//#define DEBUG_RANKING
+
 #include "Control.h"
 #include "View.h"
 #include "Data.h"
+#include "Error.h"
+
+using namespace std;
 
 //DEFINES
 struct TopRanking
@@ -17,32 +21,21 @@ struct TopRanking
 		Wins = _Wins;
 		Loses = _Loses;
 		Draws = _Draws;
+		if (Name.empty()) Name = "<NO DATA>";
 	}
 };
 
-struct D1_POINT
-{
-	int x, y;
-	string Name;
-	wstring WName;
-	int width;
+static bool Compare(TopRanking i, TopRanking j) { return (i.Wins > j.Wins); }
 
-	D1_POINT(int _x = 0, int _y = 0, string _Name = "", int _width = 0)
-	{
-		x = _x; y = _y;
-		Name = _Name;
-		width = _width;
-	}
-
-	D1_POINT(int _x = 0, int _y = 0, wstring _WName = L"", int _width = 0)
-	{
-		x = _x; y = _y;
-		WName = _WName;
-		width = _width;
-	}
-};
+const wstring GraySquareBox = L"▓";
+const wstring DarkSquareBox = L"█";
+const wstring DarkBottomHalf = L"▄";
+const wstring DarkTopHalf = L"▀";
 
 //VARIABLES
+
+static map <string, TopRanking> RankMap; //Ranking guarantee: -> Number -> Name -> TopRanking(Data) 
+static vector <TopRanking> RankSet;
 
 //DEBUG
 #ifdef DEBUG_RANKING
@@ -51,6 +44,10 @@ static void Init(TopRanking* arr);
 #endif
 
 //FUNCTIONS HERE
+static wstring ExePath();
+static int StringToInt(const string&);
+static void UpdatePlayer(const string, int, int, int);
+static int InitRankingFile(const wstring, const wstring, TopRanking*&);
 static void AllignCenter(const D1_POINT);
 static void SplittingLine(int, int);
 static void TopPlayerLogo(int, int);

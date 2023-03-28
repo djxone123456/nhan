@@ -13,6 +13,9 @@
 #include <fcntl.h>
 #include <conio.h>
 #include <stdio.h>
+#include <vector>
+#include <algorithm>
+#include <map>
 
 //Namespace
 using namespace std;
@@ -94,6 +97,28 @@ extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
 extern bool _TURN;
 extern int _COMMAND;
 extern int _X, _Y;
+
+struct D1_POINT
+{
+	int x, y;
+	string Name;
+	wstring WName;
+	int width;
+
+	D1_POINT(int _x = 0, int _y = 0, string _Name = "", int _width = 0)
+	{
+		x = _x; y = _y;
+		Name = _Name;
+		width = _width;
+	}
+
+	D1_POINT(int _x = 0, int _y = 0, wstring _WName = L"", int _width = 0)
+	{
+		x = _x; y = _y;
+		WName = _WName;
+		width = _width;
+	}
+};
 
 //Menu Control
 extern bool _KEYPRESSED;
@@ -297,14 +322,9 @@ const wstring D2_LOSE_4 = L"██╚════╗██║   ██║╚═�
 const wstring D2_LOSE_5 = L"███████╝╚██████═╝███████╝███████";
 
 
-const wstring D1_TOPPLAYERS_1 = L"▀▀█▀▀ ▄▀▀▄ ▄▀▀▄   ▄▀▀▄ █  ▄▀▀▄ █  █ █▀▀ █▀▀▄ █▀▀";
-const wstring D1_TOPPLAYERS_2 = L"  █   █  █ █▄▄▀   █▄▄▀ █  █▄▄█ █▄▄█ █▀▀ █▄▄▀ ▀▀█";
-const wstring D1_TOPPLAYERS_3 = L"  ▀    ▀▀  ▀      ▀    ▀▀ ▀  ▀ ▄▄▄▀ ▀▀▀ ▀ ▀▀ ▀▀▀";
-
-
-const wstring D1_MENULOGO_1 = L"█▀▄▀█ █▀▀ █▀▀▄ █  █";
-const wstring D1_MENULOGO_2 = L"█ ▀ █ █▀▀ █  █ █  █";
-const wstring D1_MENULOGO_3 = L"▀   ▀ ▀▀▀ ▀  ▀  ▀▀▀";
+const wstring D1_TOPPLAYERS_1 = L"▀▀█▀▀  █▀▀█  █▀▀█    █▀▀█  █    █▀▀▄  █   █  █▀▀▀  █▀▀▄  █▀▀▀█";
+const wstring D1_TOPPLAYERS_2 = L"  █    █  █  █▄▄█    █▄▄█  █    █▄▄█  ▀▄▄▄▀  █▀▀▀  █▄▄▀  ▀▀▀▄▄";
+const wstring D1_TOPPLAYERS_3 = L"  █    █▄▄█  █       █     █▄▄█ █  █    █    █▄▄▄  █  █  █▄▄▄█";
 
 const wstring D1_DANCINGCATRIGHT_1 = L"  ∧＿∧　 ♪ ";
 const wstring D1_DANCINGCATRIGHT_2 = L"（´・ω・)∩   ";
@@ -317,4 +337,20 @@ const wstring D1_DANCINGCATLEFT_2 =  L"∩・ω・｀）   ";
 const wstring D1_DANCINGCATLEFT_3 =  L"|   ⊂ﾉ     ";
 const wstring D1_DANCINGCATLEFT_4 =  L"｜　 _⊃　　♪";
 const wstring D1_DANCINGCATLEFT_5 =  L"し ⌒       ";
+
+
+const wstring D1_MENULOGO_1  =  L" ▄▄   ▄▄ ▄▄▄▄▄▄▄ ";
+const wstring D1_MENULOGO_2  =  L"█  █▄█  █       █";
+const wstring D1_MENULOGO_3  =  L"█       █    ▄▄▄█";
+const wstring D1_MENULOGO_4  =  L"█       █   █▄▄▄ ";
+const wstring D1_MENULOGO_5  =  L"█       █    ▄▄▄█";
+const wstring D1_MENULOGO_6  =  L"█ ██▄██ █   █▄▄▄ ";
+const wstring D1_MENULOGO_7  =  L"█▄█   █▄█▄▄▄▄▄▄▄█";
+const wstring D1_MENULOGO_8  =  L" ▄▄    ▄ ▄▄   ▄▄ ";
+const wstring D1_MENULOGO_9  =  L"█  █  █ █  █ █  █";
+const wstring D1_MENULOGO_10 =  L"█   █▄█ █  █ █  █";
+const wstring D1_MENULOGO_11 =  L"█       █  █▄█  █";
+const wstring D1_MENULOGO_12 =  L"█  ▄    █       █";
+const wstring D1_MENULOGO_13 =  L"█ █ █   █       █";
+const wstring D1_MENULOGO_14 =  L"█▄█  █▄▄█▄▄▄▄▄▄▄█";
 #endif
